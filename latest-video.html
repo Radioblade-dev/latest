@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Radioblade — Latest Video</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700&family=Rajdhani:wght@300;400;500;600&display=swap');
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background: #01020a;
+  font-family: 'Rajdhani', sans-serif;
+  color: #c0c8e8;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+
+#widget {
+  width: 100%;
+  max-width: 860px;
+}
+
+/* ── HEADER ── */
+#widget-header {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 16px;
+}
+
+#widget-header .label {
+  font-family: 'Orbitron', monospace;
+  font-size: .6rem;
+  font-weight: 700;
+  color: #c0181a;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  border: 1px solid rgba(192,24,26,.35);
+  padding: 4px 10px;
+  border-radius: 2px;
+  background: rgba(192,24,26,.08);
+}
+
+#widget-header .live-dot {
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  background: #c0181a;
+  animation: blink 1.5s ease-in-out infinite;
+  flex-shrink: 0;
+}
+
+@keyframes blink {
+  0%,100% { opacity: 1; }
+  50% { opacity: 0.2; }
+}
+
+#widget-header .divider {
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(to right, rgba(192,24,26,.3), transparent);
+}
+
+/* ── MAIN CARD ── */
+#card {
+  background: #07091a;
+  border: 1px solid rgba(150,170,255,.12);
+  border-radius: 10px;
+  overflow: hidden;
+  position: relative;
+}
+
+/* scan lines */
+#card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    0deg, transparent, transparent 3px,
+    rgba(100,120,255,.012) 3px,
+    rgba(100,120,255,.012) 4px
+  );
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* ── VIDEO ── */
+#video-wrap {
+  position: relative;
+  width: 100%;
+  padding-bottom: 56.25%;
+  background: #010208;
+  border-bottom: 1px solid rgba(150,170,255,.08);
+}
+
+#video-wrap iframe {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: none;
+}
+
+/* loading state */
+#video-loading {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 12px;
+}
+
+#video-loading .spinner {
+  width: 32px; height: 32px;
+  border: 2px solid rgba(192,24,26,.2);
+  border-top-color: #c0181a;
+  border-radius: 50%;
+  animation: spin .8s linear infinite;
+}
+
+@keyframes spin { to { transform: rotate(360deg); } }
+
+#video-loading p {
+  font-family: 'Orbitron', monospace;
+  font-size: .5rem;
+  color: #1e2450;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+}
+
+/* ── INFO PANEL ── */
+#info {
+  padding: 20px 22px;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 16px;
+  align-items: start;
+  position: relative;
+  z-index: 2;
+}
+
+#info-left { min-width: 0; }
+
+#video-tag {
+  font-family: 'Orbitron', monospace;
+  font-size: .5rem;
+  color: #c0181a;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+
+#video-title {
+  font-family: 'Orbitron', monospace;
+  font-size: clamp(.7rem, 2vw, .95rem);
+  font-weight: 700;
+  color: #e0eaff;
+  letter-spacing: 1px;
+  line-height: 1.4;
+  margin-bottom: 10px;
+}
+
+#video-date {
+  font-size: .7rem;
+  color: #2a3468;
+  letter-spacing: 1px;
+  margin-bottom: 10px;
+}
+
+#video-desc {
+  font-size: .78rem;
+  color: #404878;
+  line-height: 1.6;
+  display: -webkit-box;
+  -webkit-line-clamp: 4;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* ── STATS ── */
+#stats {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: flex-end;
+  flex-shrink: 0;
+}
+
+.stat {
+  text-align: right;
+}
+
+.stat-value {
+  font-family: 'Orbitron', monospace;
+  font-size: .85rem;
+  font-weight: 700;
+  color: #e0eaff;
+  letter-spacing: 1px;
+}
+
+.stat-label {
+  font-size: .6rem;
+  color: #2a3468;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  margin-top: 1px;
+}
+
+/* ── BOTTOM BAR ── */
+#bottom-bar {
+  border-top: 1px solid rgba(192,24,26,.12);
+  padding: 12px 22px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: linear-gradient(to right, rgba(192,24,26,.05), transparent);
+  position: relative;
+  z-index: 2;
+}
+
+#channel-info {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+#channel-avatar {
+  width: 28px; height: 28px;
+  border-radius: 50%;
+  background: rgba(192,24,26,.15);
+  border: 1px solid rgba(192,24,26,.3);
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Orbitron', monospace;
+  font-size: .45rem;
+  color: #c0181a;
+  font-weight: 700;
+  overflow: hidden;
+}
+
+#channel-avatar img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+#channel-name {
+  font-family: 'Orbitron', monospace;
+  font-size: .6rem;
+  font-weight: 600;
+  color: #8090c0;
+  letter-spacing: 1.5px;
+}
+
+#channel-subs {
+  font-size: .62rem;
+  color: #2a3468;
+  letter-spacing: 1px;
+  margin-top: 1px;
+}
+
+#watch-btn {
+  font-family: 'Orbitron', monospace;
+  font-size: .52rem;
+  font-weight: 600;
+  color: #e84445;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  text-decoration: none;
+  padding: 7px 16px;
+  border: 1px solid rgba(192,24,26,.38);
+  border-radius: 4px;
+  background: rgba(192,24,26,.08);
+  transition: all .2s;
+}
+
+#watch-btn:hover {
+  background: rgba(192,24,26,.22);
+  color: #fff;
+}
+
+/* error state */
+#error {
+  display: none;
+  padding: 40px;
+  text-align: center;
+}
+#error p {
+  font-family: 'Orbitron', monospace;
+  font-size: .6rem;
+  color: #1e2450;
+  letter-spacing: 2px;
+}
+</style>
+</head>
+<body>
+
+<div id="widget">
+  <div id="widget-header">
+    <div class="live-dot"></div>
+    <div class="label">Latest Upload</div>
+    <div class="divider"></div>
+  </div>
+
+  <div id="card">
+    <div id="video-wrap">
+      <div id="video-loading">
+        <div class="spinner"></div>
+        <p>Fetching transmission...</p>
+      </div>
+    </div>
+
+    <div id="info">
+      <div id="info-left">
+        <div id="video-tag">Radioblade · Latest Video</div>
+        <div id="video-title">Loading...</div>
+        <div id="video-date"></div>
+        <div id="video-desc"></div>
+      </div>
+      <div id="stats">
+        <div class="stat">
+          <div class="stat-value" id="stat-views">—</div>
+          <div class="stat-label">Views</div>
+        </div>
+        <div class="stat">
+          <div class="stat-value" id="stat-likes">—</div>
+          <div class="stat-label">Likes</div>
+        </div>
+        <div class="stat">
+          <div class="stat-value" id="stat-comments">—</div>
+          <div class="stat-label">Comments</div>
+        </div>
+      </div>
+    </div>
+
+    <div id="bottom-bar">
+      <div id="channel-info">
+        <div id="channel-avatar">RB</div>
+        <div>
+          <div id="channel-name">Radioblade</div>
+          <div id="channel-subs">— subscribers</div>
+        </div>
+      </div>
+      <a id="watch-btn" href="#" target="_blank">Watch on YouTube &#8599;</a>
+    </div>
+
+    <div id="error">
+      <p>Could not load video data.<br>Check your API key and channel ID.</p>
+    </div>
+  </div>
+</div>
+
+<script>
+// ================================================================
+//  CONFIGURATION
+// ================================================================
+
+const API_KEY    = 'AIzaSyBHSiUq7n6QIcfLTvlO2rgKt4x69WBPsag'; // Replace after regenerating
+const CHANNEL_ID = 'UIF2Yj89L9DzYmmMV8G3cg';                   // Your YouTube channel ID
+
+// ================================================================
+//  END CONFIGURATION
+// ================================================================
+
+function fmt(n) {
+  n = parseInt(n) || 0;
+  if (n >= 1000000) return (n/1000000).toFixed(1) + 'M';
+  if (n >= 1000)    return (n/1000).toFixed(1) + 'K';
+  return n.toLocaleString();
+}
+
+function fmtDate(iso) {
+  const d = new Date(iso);
+  return d.toLocaleDateString('en-GB', { day:'numeric', month:'long', year:'numeric' });
+}
+
+async function load() {
+  try {
+    // 1. Get uploads playlist ID
+    const chanR = await fetch(
+      `https://www.googleapis.com/youtube/v3/channels?part=contentDetails,statistics,snippet&id=${CHANNEL_ID}&key=${API_KEY}`
+    );
+    const chanD = await chanR.json();
+
+    if (!chanD.items || !chanD.items.length) throw new Error('Channel not found');
+
+    const chan        = chanD.items[0];
+    const uploadsId   = chan.contentDetails.relatedPlaylists.uploads;
+    const subs        = fmt(chan.statistics.subscriberCount);
+    const chanThumb   = chan.snippet.thumbnails?.default?.url || '';
+
+    document.getElementById('channel-subs').textContent = subs + ' subscribers';
+    if (chanThumb) {
+      document.getElementById('channel-avatar').innerHTML = `<img src="${chanThumb}" alt="Radioblade">`;
+    }
+
+    // 2. Get latest video from uploads playlist
+    const playR = await fetch(
+      `https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&playlistId=${uploadsId}&maxResults=1&key=${API_KEY}`
+    );
+    const playD = await playR.json();
+
+    if (!playD.items || !playD.items.length) throw new Error('No videos found');
+
+    const item    = playD.items[0].snippet;
+    const videoId = item.resourceId.videoId;
+    const title   = item.title;
+    const desc    = item.description;
+    const date    = item.publishedAt;
+
+    // 3. Get video stats
+    const vidR = await fetch(
+      `https://www.googleapis.com/youtube/v3/videos?part=statistics&id=${videoId}&key=${API_KEY}`
+    );
+    const vidD = await vidR.json();
+    const stats = vidD.items?.[0]?.statistics || {};
+
+    // Populate UI
+    document.getElementById('video-title').textContent   = title;
+    document.getElementById('video-date').textContent    = 'Published ' + fmtDate(date);
+    document.getElementById('video-desc').textContent    = desc;
+    document.getElementById('stat-views').textContent    = fmt(stats.viewCount);
+    document.getElementById('stat-likes').textContent    = fmt(stats.likeCount);
+    document.getElementById('stat-comments').textContent = fmt(stats.commentCount);
+
+    const ytUrl = `https://www.youtube.com/watch?v=${videoId}`;
+    document.getElementById('watch-btn').href = ytUrl;
+
+    // Embed player
+    const wrap = document.getElementById('video-wrap');
+    wrap.innerHTML = `<iframe
+      src="https://www.youtube.com/embed/${videoId}?rel=0&modestbranding=1"
+      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+      allowfullscreen>
+    </iframe>`;
+
+  } catch (err) {
+    console.error(err);
+    document.getElementById('video-loading').style.display = 'none';
+    document.getElementById('error').style.display = 'block';
+    document.getElementById('info').style.display = 'none';
+    document.getElementById('bottom-bar').style.display = 'none';
+  }
+}
+
+load();
+</script>
+</body>
+</html>
